@@ -1,0 +1,56 @@
+.app-bar{
+  .root{
+    width: 100%;
+  }
+  .grow {
+    flex-grow: 1;
+  }
+  .menuButton{
+    margin-left: -12;
+    margin-right: 20;
+  }
+  .title {
+    display: none;
+    // [theme.breakpoints.up(sm)]: {
+    //   display: block;
+    // }
+  }
+  .search {
+    position: relative;
+    border-radius: 10px;
+  
+    background-color: fade(#fff 0.15);
+    :hover{
+      background-color: fade(#fff 0.25);
+    }
+    margin-left: 0;
+    width: 100%;
+  }
+  // searchIcon: {
+  //   width: theme.spacing.unit * 9
+  //   height: 100%
+  //   position: absolute
+  //   pointerEvents: none
+  //   display: flex
+  //   alignItems: center
+  //   justifyContent: center
+  // }
+  // inputRoot: {
+  //   color: inherit
+  //   width: 100%
+  // }
+  // inputInput: {
+  //   paddingTop: theme.spacing.unit
+  //   paddingRight: theme.spacing.unit
+  //   paddingBottom: theme.spacing.unit
+  //   paddingLeft: theme.spacing.unit * 10
+  //   transition: theme.transitions.create(width)
+  //   width: 100%
+  //   [theme.breakpoints.up(sm)]: {
+  //     width: 120
+  //     &:focus: {
+  //       width: 200
+  //     }
+  //   }
+  // }
+}
