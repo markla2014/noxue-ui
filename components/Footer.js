@@ -1,22 +1,21 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-
 const styles = theme => ({
   footer:{
-    backgroundColor:"#ddd",
+    // backgroundColor:theme.,
     width:"100%",
-    minHeight:"200px"
+    minHeight:"200px",
+    textAlign:"center"
   }
 })
 
 class Footer extends React.Component {
-
   render(){
     const { classes } = this.props;
     return (
-      <footer className={classes.footer}>
-
+      <footer color="primary" className={classes.footer}>
+        &copy;不学网
       </footer>
     )
   }

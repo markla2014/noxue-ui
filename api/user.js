@@ -41,3 +41,16 @@ export function UserReg(nick, name, secret, codeid, code) {
     }
   })
 }
+
+export function UserReg(name, secret, captcha_id, captcha_code) {
+  return request({
+    url: '/users',
+    method: 'post',
+    data:{
+      name,
+      secret,
+      captcha_id,
+      captcha_code
+    }
+  })
+}

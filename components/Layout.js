@@ -16,10 +16,11 @@ export default ({ children, title = '不学网', keywords = "不学网", descrip
       <title>{title}</title>
       <meta charSet='utf-8' />
       <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
     </Head>
 
     <MuiThemeProvider theme={theme}>
-      <Header isLogin={true}/>
+      <Header isLogin={false}/>
       {children}
       <Footer />
     </MuiThemeProvider>

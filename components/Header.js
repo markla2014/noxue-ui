@@ -16,6 +16,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Link from 'next/link'
 
 const styles = {
   root: {
@@ -49,11 +50,11 @@ class Header extends React.Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton 
-              className={classes.menuButton} 
-                color="inherit" 
-                aria-label="Menu"
-                onClick={this.toggleDrawer("leftDrawerOpen", true)} >
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+              onClick={this.toggleDrawer("leftDrawerOpen", true)} >
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" className={classes.grow}>
@@ -68,14 +69,18 @@ class Header extends React.Component {
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="Menu"
-                  onClick={this.toggleDrawer("rightDrawerOpen", true)} 
+                  onClick={this.toggleDrawer("rightDrawerOpen", true)}
                 >
-                  <AccountCircle/>
+                  <AccountCircle />
                 </IconButton>
                 :
                 <div>
-                  <Button color="inherit">注册</Button>
-                  <Button color="inherit">登陆</Button>
+                  <Link href="/user/register">
+                    <Button color="inherit">注册</Button>
+                  </Link>
+                  <Link href="/user/login">
+                    <Button color="inherit">登陆</Button>
+                  </Link>
                 </div>
             }
           </Toolbar>

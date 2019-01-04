@@ -16,7 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { GetCaptcha, UserLogin } from '../../api/user'
+import { GetCaptcha, GetCode, UserReg } from '../../api/user'
 import NoSsr from '@material-ui/core/NoSsr';
 import Link from 'next/link'
 
@@ -29,15 +29,19 @@ const styles = theme => ({
   }
 });
 
-class Login extends React.Component {
+class Register extends React.Component {
 
   state = {
     open: false, // 图片验证码输入界面是否显示
     data: "", // 收到的图片验证码图片base64加密后的值，用于显示图片验证码
     captcha_id: "", // 图片验证码的唯一标志
     captcha_code: "", // 用户输入的图片验证码
+    nick: "",  // 用户昵称
     name: "", // 用户名，这里是邮箱或手机号
     secret: "", // 用户密码
+    secretConfirm: "", // 重复输入的确认密码
+    id: "", // 邮箱或手机验证码的唯一标志
+    code: "", // 邮箱或手机验证码
   }
 
   getCaptcha = () => {
@@ -65,9 +69,23 @@ class Login extends React.Component {
     this.setState({ open: false });
   }
 
-  handleLogin = () => {
-    UserLogin(this.state.name, this.state.secret, this.state.captcha_id, this.state.captcha_code).then(res => {
-      location.href = "/"
+  handleSendCode = () => {
+
+    GetCode(this.state.captcha_id, this.state.captcha_code, this.state.name).then(res => {
+      this.setState({ id: res.id, open: false })
+      alert("验证码发送成功，请注意查收，若是邮箱注册没收到邮件，请尝试手机注册")
+    }).catch(e => {
+      this.getCaptcha()
+    })
+  }
+
+  handleReg = () => {
+    if (this.state.secret != this.state.secretConfirm) {
+      alert("两次密码不一致，请确认")
+      return
+    }
+    UserReg(this.state.nick, this.state.name, this.state.secret, this.state.id, this.state.code).then(res => {
+      alert("注册成功")
     })
   }
 
@@ -96,16 +114,35 @@ class Login extends React.Component {
 
     return (
       <NoSsr>
-        <Layout title="用户登陆">
+        <Layout title="用户注册">
           <Card style={{ width: "400px", margin: "50px auto" }}>
-            <CardHeader title="不学网用户登陆" className={classes.header} />
+            <CardHeader title="不学网用户注册" className={classes.header} />
             <CardContent>
               <Grid container spacing={8} alignItems="flex-end">
                 <Grid item>
                   <AccountCircle />
                 </Grid>
                 <Grid item sm={10} xs={10} md={10} lg={10} xl={10}>
+                  <TextField fullWidth onChange={this.changeNick} label="用户昵称" />
+                </Grid>
+              </Grid>
+              <Grid container spacing={8} alignItems="flex-end">
+                <Grid item>
+                  <AccountCircle />
+                </Grid>
+                <Grid item sm={7} xs={7} md={7} lg={7} xl={7}>
                   <TextField fullWidth onChange={this.changeName} label="邮箱或手机号" />
+                </Grid>
+                <Grid item>
+                  <Button size="small" variant="contained" color="secondary" onClick={this.handleClickOpen}>获取验证码</Button>
+                </Grid>
+              </Grid>
+              <Grid container spacing={8} alignItems="flex-end">
+                <Grid item>
+                  <Lock />
+                </Grid>
+                <Grid item sm={10} xs={10} md={10} lg={10} xl={10}>
+                  <TextField fullWidth onChange={this.changeCode} label="邮箱或手机收到的验证码" />
                 </Grid>
               </Grid>
               <Grid container spacing={8} alignItems="flex-end">
@@ -116,12 +153,20 @@ class Login extends React.Component {
                   <TextField fullWidth type="password" onChange={this.changeSecret} label="密码" />
                 </Grid>
               </Grid>
+              <Grid container spacing={8} alignItems="flex-end">
+                <Grid item>
+                  <Lock />
+                </Grid>
+                <Grid item sm={10} xs={10} md={10} lg={10} xl={10}>
+                  <TextField fullWidth type="password" onChange={this.changeSecretConfirm} label="确认密码" />
+                </Grid>
+              </Grid>
             </CardContent>
             <CardActions>
-              <Button variant="contained" color="primary" color="primary" onClick={this.handleClickOpen}>登陆</Button>
+              <Button variant="contained" color="primary" onClick={this.handleReg}>注册</Button>
               <div>
-                <Link href="/user/register">
-                  <Button color="secondary">没有账号？点击注册</Button>
+                <Link href="/user/login">
+                  <Button color="secondary">已有账号？点击登陆</Button>
                 </Link>
               </div>
             </CardActions>
@@ -159,8 +204,8 @@ class Login extends React.Component {
 
 }
 
-Login.propTypes = {
+Register.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(Register);
