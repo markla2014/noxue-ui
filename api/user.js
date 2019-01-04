@@ -42,7 +42,7 @@ export function UserReg(nick, name, secret, codeid, code) {
   })
 }
 
-export function UserReg(name, secret, captcha_id, captcha_code) {
+export function UserLogin(name, secret, captcha_id, captcha_code) {
   return request({
     url: '/users',
     method: 'post',
