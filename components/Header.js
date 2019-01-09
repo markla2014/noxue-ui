@@ -17,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Link from 'next/link'
+import Router from 'next/router'
 
 const styles = {
   root: {
@@ -38,13 +39,24 @@ class Header extends React.Component {
   state = {
     leftDrawerOpen: false,
     rightDrawerOpen: false,
+    isLogin:false,
   }
+  
   toggleDrawer = (type, open) => () => {
     this.setState({ [type]: open });
   };
 
+  handleLogout = () => {
+    localStorage.removeItem("user")
+    Router.push("/user/login")
+  }
+
+  componentDidMount() {
+    this.setState({"isLogin":localStorage.getItem("user")?true:false})
+  }
+
   render() {
-    const { classes, isLogin } = this.props
+    const { classes } = this.props
 
     return (
       <div className={classes.root}>
@@ -64,7 +76,7 @@ class Header extends React.Component {
 
 
             {
-              isLogin ?
+              this.state.isLogin ?
                 <IconButton
                   className={classes.menuButton}
                   color="inherit"
@@ -137,7 +149,7 @@ class Header extends React.Component {
             </List>
             <Divider />
             <List>
-              <ListItem button>
+              <ListItem button onClick={this.handleLogout}>
                 <InboxIcon />
                 <ListItemText primary="退出" />
               </ListItem>

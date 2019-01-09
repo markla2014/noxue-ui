@@ -20,7 +20,7 @@ export default ({ children, title = '不学网', keywords = "不学网", descrip
     </Head>
 
     <MuiThemeProvider theme={theme}>
-      <Header isLogin={false}/>
+      <Header/>
       {children}
       <Footer />
     </MuiThemeProvider>

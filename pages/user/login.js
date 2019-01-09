@@ -19,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { GetCaptcha, UserLogin } from '../../api/user'
 import NoSsr from '@material-ui/core/NoSsr';
 import Link from 'next/link'
+import Router from 'next/router'
 
 const styles = theme => ({
   margin: {
@@ -47,7 +48,6 @@ class Login extends React.Component {
       return
     }
     GetCaptcha().then(res => {
-      console.log(res)
       this.setState({ data: res.data, captcha_id: res.id, captcha_code: "" })
       this.setState({ open: true });
     })
@@ -67,7 +67,11 @@ class Login extends React.Component {
 
   handleLogin = () => {
     UserLogin(this.state.name, this.state.secret, this.state.captcha_id, this.state.captcha_code).then(res => {
-      location.href = "/"
+      console.log(res)
+      localStorage.setItem("user", JSON.stringify(res))
+      Router.push("/")
+    }).catch(err => {
+      this.getCaptcha()
     })
   }
 
@@ -85,9 +89,6 @@ class Login extends React.Component {
   }
   changeSecret = (e) => {
     this.setState({ secret: e.target.value })
-  }
-  changeSecretConfirm = (e) => {
-    this.setState({ secretConfirm: e.target.value })
   }
 
 
@@ -147,7 +148,7 @@ class Login extends React.Component {
               <Button onClick={this.handleClose} color="primary">
                 取消
             </Button>
-              <Button onClick={this.handleSendCode} variant="contained" color="primary">
+              <Button onClick={this.handleLogin} variant="contained" color="primary">
                 确认
             </Button>
             </DialogActions>

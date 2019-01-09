@@ -9,9 +9,12 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(
   config => {
-    // if (store.getters.token) {
-    //   config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-    // }
+    var str = localStorage.getItem("user")
+    if (str){
+      var data = JSON.parse(str)
+      config.headers['Authorization'] = 'Bearer ' + data.token // 让每个请求携带自定义token 请根据实际情况自行修改
+    }
+    
     return config
   },
   error => {
@@ -56,13 +59,13 @@ service.interceptors.response.use(
     return response.data
   },
   error => {
-    // console.log('err' + error) // for debug
+    console.log('err' + error) // for debug
     // Message({
     //   message: error.response.data.msg,
     //   type: 'error',
     //   duration: 5 * 1000
     // })
-    alert(error.response.data.error)
+    alert(error.response.data.msg)
     return Promise.reject(error)
   }
 )

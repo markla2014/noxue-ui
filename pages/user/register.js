@@ -19,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { GetCaptcha, GetCode, UserReg } from '../../api/user'
 import NoSsr from '@material-ui/core/NoSsr';
 import Link from 'next/link'
+import Router from 'next/router'
 
 const styles = theme => ({
   margin: {
@@ -42,6 +43,7 @@ class Register extends React.Component {
     secretConfirm: "", // 重复输入的确认密码
     id: "", // 邮箱或手机验证码的唯一标志
     code: "", // 邮箱或手机验证码
+    time:0, // 当点击获取验证码之后，用于记录还有多久能获取验证码 
   }
 
   getCaptcha = () => {
@@ -72,8 +74,16 @@ class Register extends React.Component {
   handleSendCode = () => {
 
     GetCode(this.state.captcha_id, this.state.captcha_code, this.state.name).then(res => {
-      this.setState({ id: res.id, open: false })
+      this.setState({ id: res.id, open: false,time:60 })
+      var that = this
+      var t = setInterval(function(){
+        that.setState({time:that.state.time-1})
+        if (that.state.time==0){
+          clearInterval(t)
+        }
+      },1000)
       alert("验证码发送成功，请注意查收，若是邮箱注册没收到邮件，请尝试手机注册")
+
     }).catch(e => {
       this.getCaptcha()
     })
@@ -85,7 +95,7 @@ class Register extends React.Component {
       return
     }
     UserReg(this.state.nick, this.state.name, this.state.secret, this.state.id, this.state.code).then(res => {
-      alert("注册成功")
+      Router.push("/user/login")
     })
   }
 
@@ -134,7 +144,7 @@ class Register extends React.Component {
                   <TextField fullWidth onChange={this.changeName} label="邮箱或手机号" />
                 </Grid>
                 <Grid item>
-                  <Button size="small" variant="contained" color="secondary" onClick={this.handleClickOpen}>获取验证码</Button>
+                  <Button size="small" variant="contained" color="secondary" disabled={this.state.time>0} onClick={this.handleClickOpen}>获取验证码{this.state.time>0?"("+this.state.time+")":""}</Button>
                 </Grid>
               </Grid>
               <Grid container spacing={8} alignItems="flex-end">

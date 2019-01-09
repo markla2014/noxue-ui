@@ -44,13 +44,15 @@ export function UserReg(nick, name, secret, codeid, code) {
 
 export function UserLogin(name, secret, captcha_id, captcha_code) {
   return request({
-    url: '/users',
+    url: '/token',
     method: 'post',
     data:{
       name,
       secret,
+    },
+    params:{
       captcha_id,
-      captcha_code
+      captcha_code,
     }
   })
 }
