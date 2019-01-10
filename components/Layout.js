@@ -18,7 +18,10 @@ export default ({ children, title = '不学网', keywords = "不学网", descrip
       <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
     </Head>
-
+    <script src="/static/js/vconsole.min.js"></script>
+    <script>
+    var vConsole = new VConsole();
+  </script>
     <MuiThemeProvider theme={theme}>
       <Header/>
       {children}
